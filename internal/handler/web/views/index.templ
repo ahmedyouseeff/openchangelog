@@ -27,12 +27,12 @@ templ Index(arg IndexArgs) {
 	}) {
 		@components.Theme(arg.ThemeArgs) {
 			@components.Navbar() {
-				@components.LogoImg(arg.Logo)
+				<div></div>
 				@components.NavbarActions() {
-					if arg.ShowSearchButton {
-						@components.SearchButton(arg.SearchButtonArgs)
-					}
-					@components.RSS(arg.RSSArgs)
+					@components.NavbarButton(components.NavbarButtonArgs{
+						Link: "https://facebook.com",
+						Text: "En",
+					})
 				}
 			}
 			@components.Prose() {
@@ -42,7 +42,6 @@ templ Index(arg IndexArgs) {
 					}
 					@components.ArticleList(arg.ArticleListArgs)
 				}
-				@components.Footer(arg.FooterArgs)
 			}
 		}
 	}

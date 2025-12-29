@@ -78,7 +78,7 @@ func PasswordProtection(args PasswordProtectionArgs) templ.Component {
 						}()
 					}
 					ctx = templ.InitializeContext(ctx)
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"o-flex o-flex-1 o-justify-center o-items-center\"><div class=\"o-my-auto o-text-center o-rounded-lg o-border dark:o-border-white/10 o-p-8\"><h1>Protected Page</h1><p>Enter the password to access this changelog.</p><form hx-post=\"/password\" hx-trigger=\"submit\" hx-target=\"#password-error\" hx-disabled-elt=\"find button\" method=\"post\" class=\"o-space-y-3\"><div><label class=\"input o-flex o-items-center o-gap-2\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"o-flex o-flex-1 o-justify-center o-items-center\"><div class=\"o-my-auto o-text-center o-rounded-lg o-border dark:o-border-white/10 o-p-8\"><h1>صفحة محمية</h1><p>أدخل كلمة المرور للوصول إلى سجل التغييرات هذا.</p><form hx-post=\"/password\" hx-trigger=\"submit\" hx-target=\"#password-error\" hx-disabled-elt=\"find button\" method=\"post\" class=\"o-space-y-3\"><div><label class=\"input o-flex o-items-center o-gap-2\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -86,7 +86,7 @@ func PasswordProtection(args PasswordProtectionArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<input name=\"password\" type=\"password\" class=\"o-w-full\" placeholder=\"Password\"></label>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<input name=\"password\" type=\"password\" class=\"o-w-full\" placeholder=\"كلمة المرور\"></label>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -94,7 +94,7 @@ func PasswordProtection(args PasswordProtectionArgs) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div><button class=\"btn btn-primary o-w-full\" type=\"submit\">Submit</button></form></div></div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div><button class=\"btn btn-primary o-w-full\" type=\"submit\">إرسال</button></form></div></div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -117,8 +117,8 @@ func PasswordProtection(args PasswordProtectionArgs) templ.Component {
 			return nil
 		})
 		templ_7745c5c3_Err = layout.Main(layout.MainArgs{
-			Title:       "Password Protection",
-			Description: "This changelog is password protected. Please contact your organization admin to receive your password",
+			Title:       "حماية بكلمة المرور",
+			Description: "هذا سجل التغييرات محمي بكلمة مرور. يرجى الاتصال بمسؤول المؤسسة للحصول على كلمة المرور",
 			CSS:         args.CSS,
 			IncludeHTMX: true,
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
