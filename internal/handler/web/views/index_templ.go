@@ -5,10 +5,9 @@ package views
 
 //lint:file-ignore SA4006 This context is only used if a nested component is present.
 
-import "github.com/a-h/templ"
-import templruntime "github.com/a-h/templ/runtime"
-
 import (
+	"github.com/a-h/templ"
+	templruntime "github.com/a-h/templ/runtime"
 	"github.com/jonashiltl/openchangelog/components"
 	"github.com/jonashiltl/openchangelog/internal/handler/web/views/layout"
 )
@@ -24,6 +23,8 @@ type IndexArgs struct {
 	components.FooterArgs
 	ShowSearchButton bool
 	components.SearchButtonArgs
+	TranslationURL  string
+	TranslationText string
 }
 
 func Index(arg IndexArgs) templ.Component {
@@ -99,12 +100,14 @@ func Index(arg IndexArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = components.NavbarButton(components.NavbarButtonArgs{
-							Link: "https://facebook.com",
-							Text: "En",
-						}).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
+						if arg.TranslationURL != "" {
+							templ_7745c5c3_Err = components.NavbarButton(components.NavbarButtonArgs{
+								Link: arg.TranslationURL,
+								Text: arg.TranslationText,
+							}).Render(ctx, templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err != nil {
+								return templ_7745c5c3_Err
+							}
 						}
 						return nil
 					})

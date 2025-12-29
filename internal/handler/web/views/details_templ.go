@@ -5,11 +5,11 @@ package views
 
 //lint:file-ignore SA4006 This context is only used if a nested component is present.
 
-import "github.com/a-h/templ"
-import templruntime "github.com/a-h/templ/runtime"
-
 import (
 	"fmt"
+
+	"github.com/a-h/templ"
+	templruntime "github.com/a-h/templ/runtime"
 	"github.com/jonashiltl/openchangelog/components"
 	"github.com/jonashiltl/openchangelog/internal/handler/web/views/layout"
 )
@@ -26,6 +26,8 @@ type DetailsArgs struct {
 	components.FooterArgs
 	ShowSearchButton bool
 	components.SearchButtonArgs
+	TranslationURL  string
+	TranslationText string
 }
 
 func Details(arg DetailsArgs) templ.Component {
@@ -101,12 +103,14 @@ func Details(arg DetailsArgs) templ.Component {
 							}()
 						}
 						ctx = templ.InitializeContext(ctx)
-						templ_7745c5c3_Err = components.NavbarButton(components.NavbarButtonArgs{
-							Link: "https://facebook.com",
-							Text: "En",
-						}).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
+						if arg.TranslationURL != "" {
+							templ_7745c5c3_Err = components.NavbarButton(components.NavbarButtonArgs{
+								Link: arg.TranslationURL,
+								Text: arg.TranslationText,
+							}).Render(ctx, templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err != nil {
+								return templ_7745c5c3_Err
+							}
 						}
 						return nil
 					})
@@ -198,7 +202,7 @@ func Details(arg DetailsArgs) templ.Component {
 								var templ_7745c5c3_Var10 string
 								templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(arg.Prev.Title)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/handler/web/views/details.templ`, Line: 51, Col: 24}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/handler/web/views/details.templ`, Line: 54, Col: 24}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 								if templ_7745c5c3_Err != nil {
@@ -232,7 +236,7 @@ func Details(arg DetailsArgs) templ.Component {
 								var templ_7745c5c3_Var12 string
 								templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(arg.Next.Title)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/handler/web/views/details.templ`, Line: 58, Col: 24}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/handler/web/views/details.templ`, Line: 61, Col: 24}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 								if templ_7745c5c3_Err != nil {

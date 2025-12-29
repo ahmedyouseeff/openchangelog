@@ -16,6 +16,8 @@ type IndexArgs struct {
 	components.FooterArgs
 	ShowSearchButton bool
 	components.SearchButtonArgs
+	TranslationURL   string
+	TranslationText	 string
 }
 
 templ Index(arg IndexArgs) {
@@ -29,10 +31,12 @@ templ Index(arg IndexArgs) {
 			@components.Navbar() {
 				<div></div>
 				@components.NavbarActions() {
-					@components.NavbarButton(components.NavbarButtonArgs{
-						Link: "https://facebook.com",
-						Text: "En",
-					})
+					if arg.TranslationURL != "" {
+						@components.NavbarButton(components.NavbarButtonArgs{
+							Link: arg.TranslationURL,
+							Text: arg.TranslationText,
+						})
+					}
 				}
 			}
 			@components.Prose() {

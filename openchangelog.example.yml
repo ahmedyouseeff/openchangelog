@@ -21,8 +21,12 @@ cache:
 page:
   title: سجل التغييرات
   subtitle: أحدث التطويرات للمنتج
-  colorScheme: system
+  colorScheme: light
   hidePoweredBy: false
+  # translationUrl: URL to navigate to when clicking on the translation button (e.g., "EN" in the navbar)
+  translationUrl: https://example.com
+  # translationText: Text to display on the translation button (e.g., "EN" in the navbar)
+  translationText: EN
   logo:
     src: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
     width: 70px

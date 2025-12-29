@@ -2,6 +2,7 @@ package config
 
 import (
 	"log/slog"
+	"strings"
 
 	"github.com/spf13/viper"
 )
@@ -62,12 +63,14 @@ type LogoConfig struct {
 }
 
 type PageConfig struct {
-	Logo          *LogoConfig `mapstructure:"logo"`
-	Title         string      `mapstructure:"title"`
-	Subtitle      string      `mapstructure:"subtitle"`
-	ColorScheme   string      `mapstructure:"colorScheme"`
-	HidePoweredBy bool        `mapstructure:"hidePoweredBy"`
-	Auth          *AuthConfig `mapstructure:"auth"`
+	Logo            *LogoConfig `mapstructure:"logo"`
+	Title           string      `mapstructure:"title"`
+	Subtitle        string      `mapstructure:"subtitle"`
+	ColorScheme     string      `mapstructure:"colorScheme"`
+	HidePoweredBy   bool        `mapstructure:"hidePoweredBy"`
+	Auth            *AuthConfig `mapstructure:"auth"`
+	TranslationURL  string      `mapstructure:"translationUrl"`
+	TranslationText string      `mapstructure:"translationText"`
 }
 
 type AuthConfig struct {
@@ -149,6 +152,11 @@ func Load(configFile string) (Config, error) {
 		viper.AddConfigPath("/etc/")
 		viper.AddConfigPath(".")
 	}
+
+	// Enable reading from environment variables
+	viper.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
 	err := viper.ReadInConfig()
 	if err != nil {
 		return Config{}, err

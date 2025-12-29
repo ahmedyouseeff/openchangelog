@@ -69,6 +69,12 @@ func (r *renderer) RenderArticleList(ctx context.Context, w io.Writer, args Rend
 
 func (r *renderer) RenderChangelog(ctx context.Context, w io.Writer, args RenderChangelogArgs) error {
 	notes := parsedArticlesToComponentArticles(args.ReleaseNotes)
+	translationURL := ""
+	translationText := ""
+	if r.cfg.Page != nil {
+		translationURL = r.cfg.Page.TranslationURL
+		translationText = r.cfg.Page.TranslationText
+	}
 	return views.Index(views.IndexArgs{
 		RSSArgs: components.RSSArgs{
 			FeedURL: args.FeedURL,
@@ -107,6 +113,8 @@ func (r *renderer) RenderChangelog(ctx context.Context, w io.Writer, args Render
 		FooterArgs: components.FooterArgs{
 			HidePoweredBy: args.CL.HidePoweredBy,
 		},
+		TranslationURL:  translationURL,
+		TranslationText: translationText,
 	}).Render(ctx, w)
 }
 
@@ -135,6 +143,10 @@ func (r *renderer) RenderDetails(ctx context.Context, w io.Writer, args RenderDe
 	articles := parsedArticlesToComponentArticles([]parse.ParsedReleaseNote{
 		args.ReleaseNote, args.Prev, args.Next,
 	})
+	translationURL := ""
+	if r.cfg.Page != nil {
+		translationURL = r.cfg.Page.TranslationURL
+	}
 	return views.Details(views.DetailsArgs{
 		RSSArgs: components.RSSArgs{
 			FeedURL: args.FeedURL,
@@ -170,6 +182,7 @@ func (r *renderer) RenderDetails(ctx context.Context, w io.Writer, args RenderDe
 		FooterArgs: components.FooterArgs{
 			HidePoweredBy: args.CL.HidePoweredBy,
 		},
+		TranslationURL: translationURL,
 	}).Render(ctx, w)
 }
 
