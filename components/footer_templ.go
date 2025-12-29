@@ -38,7 +38,7 @@ func Footer(args FooterArgs) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if !args.HidePoweredBy {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"o-text-caption o-px-4 sm:o-px-0\">مدعوم من <a href=\"https://openchangelog.com\" target=\"_blank\">Openchangelog</a></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"o-text-caption o-px-4 sm:o-px-0\">Powered by <a href=\"https://openchangelog.com\" target=\"_blank\">Openchangelog</a></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
