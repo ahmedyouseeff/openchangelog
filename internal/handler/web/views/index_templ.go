@@ -5,9 +5,10 @@ package views
 
 //lint:file-ignore SA4006 This context is only used if a nested component is present.
 
+import "github.com/a-h/templ"
+import templruntime "github.com/a-h/templ/runtime"
+
 import (
-	"github.com/a-h/templ"
-	templruntime "github.com/a-h/templ/runtime"
 	"github.com/jonashiltl/openchangelog/components"
 	"github.com/jonashiltl/openchangelog/internal/handler/web/views/layout"
 )
@@ -176,6 +177,14 @@ func Index(arg IndexArgs) templ.Component {
 							return templ_7745c5c3_Err
 						}
 						templ_7745c5c3_Err = components.ArticleList(arg.ArticleListArgs).Render(ctx, templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " ")
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = components.Footer(arg.FooterArgs).Render(ctx, templ_7745c5c3_Buffer)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
