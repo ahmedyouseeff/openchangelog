@@ -5,5 +5,9 @@ services:
       - "6001:6001"
     volumes:
       - type: bind
-        source: openchangelog.example.yml
+        source: ./openchangelog.yml
         target: /etc/openchangelog.yml
+        read_only: true
+      - type: bind
+        source: ./release-notes
+        target: /release-notes

@@ -91,7 +91,7 @@ func HeaderContent(args HeaderArgs) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "Back\t")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "رجوع\t")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

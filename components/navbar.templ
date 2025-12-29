@@ -32,6 +32,22 @@ templ NavbarActions() {
 	</div>
 }
 
+type NavbarButtonArgs struct {
+	Link string
+	Text string
+}
+
+templ NavbarButton(args NavbarButtonArgs) {
+	<a
+		href={ templ.URL(args.Link) }
+		class="o-not-prose o-px-4 o-py-2 o-rounded o-text-sm o-font-medium o-transition-colors 
+		       o-bg-black/10 dark:o-bg-white/10 hover:o-bg-black/20 dark:hover:o-bg-white/20 
+		       o-text-black dark:o-text-white"
+	>
+		{ args.Text }
+	</a>
+}
+
 type RSSArgs struct {
 	FeedURL string
 }

@@ -19,8 +19,8 @@ cache:
   #tinybird:
   #  accessToken:
 page:
-  title: Changelog
-  subtitle: The latest product updates from Openchangelog
+  title: سجل التغييرات
+  subtitle: أحدث التطويرات للمنتج
   colorScheme: system
   hidePoweredBy: false
   logo:
