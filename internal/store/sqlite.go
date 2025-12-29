@@ -4,6 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"fmt"
+	"log/slog"
+	"os"
+	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -62,9 +67,30 @@ func (gh ghSource) toExported() GHSource {
 }
 
 func NewSQLiteStore(conn string) (Store, error) {
+	// Extract database file path and ensure directory exists
+	dbPath := extractDBPath(conn)
+	if dbPath != "" {
+		if err := ensureDBDirectory(dbPath); err != nil {
+			return nil, fmt.Errorf("failed to create database directory: %w", err)
+		}
+	}
+
 	db, err := sql.Open("sqlite3", conn)
 	if err != nil {
 		return nil, err
+	}
+
+	// Force SQLite to create the database file if it doesn't exist
+	_, err = db.Exec("SELECT 1")
+	if err != nil {
+		db.Close()
+		return nil, fmt.Errorf("failed to initialize database: %w", err)
+	}
+
+	// Run migrations
+	if err := runMigrations(db); err != nil {
+		db.Close()
+		return nil, fmt.Errorf("failed to run migrations: %w", err)
 	}
 
 	q := New(db)
@@ -73,6 +99,100 @@ func NewSQLiteStore(conn string) (Store, error) {
 		q:  q,
 		db: db,
 	}, nil
+}
+
+// extractDBPath extracts the file path from a SQLite connection string
+// Handles formats like: file:path, file:///path, file:./path
+func extractDBPath(conn string) string {
+	// Remove query parameters
+	parts := strings.Split(conn, "?")
+	path := parts[0]
+
+	// Handle file: prefix
+	if strings.HasPrefix(path, "file:") {
+		path = strings.TrimPrefix(path, "file:")
+		// Handle file:/// format
+		if strings.HasPrefix(path, "///") {
+			path = strings.TrimPrefix(path, "///")
+		} else if strings.HasPrefix(path, "//") {
+			// file://host/path format (not common for SQLite)
+			return ""
+		}
+	}
+
+	return path
+}
+
+// ensureDBDirectory creates the directory for the database file if it doesn't exist
+func ensureDBDirectory(dbPath string) error {
+	dir := filepath.Dir(dbPath)
+	if dir == "" || dir == "." {
+		return nil // No directory needed (current directory)
+	}
+	return os.MkdirAll(dir, 0755)
+}
+
+// runMigrations executes database migrations in order
+func runMigrations(db *sql.DB) error {
+	migrationsDir := "migrations"
+	entries, err := os.ReadDir(migrationsDir)
+	if err != nil {
+		// If migrations directory doesn't exist, log a warning but don't fail
+		// This allows the app to work if migrations are run separately
+		slog.Warn("migrations directory not found, skipping automatic migrations", "dir", migrationsDir)
+		return nil
+	}
+
+	var migrationFiles []string
+	for _, entry := range entries {
+		if !entry.IsDir() && strings.HasSuffix(entry.Name(), ".sql") {
+			migrationFiles = append(migrationFiles, entry.Name())
+		}
+	}
+
+	if len(migrationFiles) == 0 {
+		slog.Warn("no migration files found")
+		return nil
+	}
+
+	sort.Strings(migrationFiles)
+
+	for _, filename := range migrationFiles {
+		content, err := os.ReadFile(filepath.Join(migrationsDir, filename))
+		if err != nil {
+			return fmt.Errorf("failed to read migration file %s: %w", filename, err)
+		}
+
+		// Extract SQL between goose Up markers
+		sqlContent := string(content)
+		lines := strings.Split(sqlContent, "\n")
+		var upSQL strings.Builder
+		inUpSection := false
+
+		for _, line := range lines {
+			if strings.Contains(line, "-- +goose Up") {
+				inUpSection = true
+				continue
+			}
+			if strings.Contains(line, "-- +goose Down") {
+				break
+			}
+			if inUpSection && !strings.Contains(line, "-- +goose StatementBegin") && !strings.Contains(line, "-- +goose StatementEnd") {
+				upSQL.WriteString(line + "\n")
+			}
+		}
+
+		if upSQL.Len() > 0 {
+			_, err = db.Exec(upSQL.String())
+			if err != nil {
+				return fmt.Errorf("failed to execute migration %s: %w", filename, err)
+			}
+			slog.Debug("executed migration", "file", filename)
+		}
+	}
+
+	slog.Info("database migrations completed successfully", "count", len(migrationFiles))
+	return nil
 }
 
 type sqlite struct {

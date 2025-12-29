@@ -9,24 +9,24 @@ addr: 0.0.0.0:6001
 #  auth:
 #    accessToken:
 local:
-  filesPath: /release-notes
+  filesPath: ./release-notes
 cache: 
   type: disk
   disk:
-    location: /data/cache/
+    location: ./data/cache/
 #analytics:
   #provider: tinybird
   #tinybird:
   #  accessToken:
 page:
-  title: سجل التغييرات
-  subtitle: أحدث التطويرات للمنتج
+  title: Changelog
+  subtitle: The latest product updates from Openchangelog
   colorScheme: light
-  hidePoweredBy: false
+  hidePoweredBy: true
   # translationUrl: URL to navigate to when clicking on the translation button (e.g., "EN" in the navbar)
   translationUrl: https://example.com
   # translationText: Text to display on the translation button (e.g., "EN" in the navbar)
-  translationText: EN
+  translationText: العربية
   logo:
     src: https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png
     width: 70px
