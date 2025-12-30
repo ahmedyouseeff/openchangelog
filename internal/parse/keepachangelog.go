@@ -95,14 +95,14 @@ func (g *kparser) parseRelease(release string) (ParsedReleaseNote, error) {
 		},
 	}
 
-	sc := bufio.NewScanner(strings.NewReader(content))
-	for sc.Scan() {
-		line := sc.Text()
-		if strings.HasPrefix(line, "### ") {
-			changeType := strings.TrimPrefix(line, "### ")
-			a.AddTag(changeType)
-		}
-	}
+	// sc := bufio.NewScanner(strings.NewReader(content))
+	// for sc.Scan() {
+	// 	line := sc.Text()
+	// 	if strings.HasPrefix(line, "### ") {
+	// 		changeType := strings.TrimPrefix(line, "### ")
+	// 		a.AddTag(changeType)
+	// 	}
+	// }
 
 	var htmlContent bytes.Buffer
 	err := g.gm.Convert([]byte(content), &htmlContent)
